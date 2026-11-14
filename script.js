@@ -1,4 +1,4 @@
-// Theme Toggle Logic
+// --- Theme Logic ---
 const themeToggleBtn = document.getElementById('theme-toggle');
 const htmlElement = document.documentElement;
 
@@ -10,31 +10,25 @@ themeToggleBtn.addEventListener('click', () => {
     localStorage.setItem('theme', newTheme);
 });
 
-// Load saved theme on startup
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
     htmlElement.setAttribute('data-theme', savedTheme);
     themeToggleBtn.textContent = savedTheme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode';
 }
 
-// Snippet Logic
+// --- App State ---
 const form = document.getElementById('snippet-form');
 const vaultGrid = document.getElementById('vault-grid');
 let snippets = JSON.parse(localStorage.getItem('snippets')) || [];
 
+// --- Render Logic ---
 function renderSnippets(filterText = '') {
     vaultGrid.innerHTML = '';
     
-    // Calculate and update stats
-    const countSpan = document.getElementById('snippet-count');
-    const sizeSpan = document.getElementById('storage-size');
-    
-    countSpan.textContent = snippets.length;
-    // Calculate rough KB size of the saved strings
-    const kbSize = (JSON.stringify(snippets).length / 1024).toFixed(2);
-    sizeSpan.textContent = kbSize;
+    // Update Dashboard Stats
+    document.getElementById('snippet-count').textContent = snippets.length;
+    document.getElementById('storage-size').textContent = (JSON.stringify(snippets).length / 1024).toFixed(2);
 
-    // Filter logic for search
     const filteredSnippets = snippets.filter(snippet => 
         snippet.title.toLowerCase().includes(filterText.toLowerCase()) || 
         snippet.code.toLowerCase().includes(filterText.toLowerCase())
@@ -50,31 +44,23 @@ function renderSnippets(filterText = '') {
         return;
     }
 
-    filteredSnippets.forEach((snippet, originalIndex) => {
-        // Find true index in the main array so deletion/copying works during search
+    filteredSnippets.forEach((snippet) => {
         const trueIndex = snippets.indexOf(snippet);
-        
         const card = document.createElement('div');
         card.className = 'snippet-card';
         card.innerHTML = `
             <h3>${snippet.title}</h3>
             <pre><code>${snippet.code}</code></pre>
             <div class="card-actions">
-                <button onclick="copyCode(${trueIndex})">Copy Code</button>
-                <button onclick="deleteSnippet(${trueIndex})" style="color: #dc3545; border-color: #dc3545;">Delete</button>
+                <button class="btn-secondary" onclick="copyCode(${trueIndex})">Copy Code</button>
+                <button class="btn-secondary" onclick="deleteSnippet(${trueIndex})" style="color: #e53e3e; border-color: #fc8181;">Delete</button>
             </div>
         `;
         vaultGrid.appendChild(card);
     });
 }
 
-// Live Search Listener
-document.getElementById('search-input').addEventListener('input', (e) => {
-    renderSnippets(e.target.value);
-});
-
-
-
+// --- Event Listeners ---
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const title = document.getElementById('snippet-title').value;
@@ -84,19 +70,29 @@ form.addEventListener('submit', (e) => {
     localStorage.setItem('snippets', JSON.stringify(snippets));
     
     form.reset();
-    renderSnippets();
+    renderSnippets(document.getElementById('search-input').value);
 });
 
+document.getElementById('search-input').addEventListener('input', (e) => {
+    renderSnippets(e.target.value);
+});
+
+// --- Actions ---
 window.copyCode = function(index) {
     const codeToCopy = snippets[index].code;
     navigator.clipboard.writeText(codeToCopy).then(() => {
-        // Find the button that was clicked and temporarily change its text
         const buttons = document.querySelectorAll('.snippet-card button');
         const copyBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick') === `copyCode(${index})`);
         if(copyBtn) {
             const originalText = copyBtn.textContent;
             copyBtn.textContent = 'Copied!';
-            setTimeout(() => copyBtn.textContent = originalText, 2000);
+            copyBtn.style.backgroundColor = 'var(--accent-color)';
+            copyBtn.style.color = 'white';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.backgroundColor = '';
+                copyBtn.style.color = '';
+            }, 2000);
         }
     });
 };
@@ -104,8 +100,40 @@ window.copyCode = function(index) {
 window.deleteSnippet = function(index) {
     snippets.splice(index, 1);
     localStorage.setItem('snippets', JSON.stringify(snippets));
-    renderSnippets();
+    renderSnippets(document.getElementById('search-input').value);
 };
 
-// Initial render
+// --- NEW: Backup & Restore Data ---
+document.getElementById('export-btn').addEventListener('click', () => {
+    if(snippets.length === 0) return alert("Nothing to export yet!");
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(snippets));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "snippet_vault_backup.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+});
+
+document.getElementById('import-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        try {
+            const importedData = JSON.parse(event.target.result);
+            if(Array.isArray(importedData)) {
+                snippets = importedData;
+                localStorage.setItem('snippets', JSON.stringify(snippets));
+                renderSnippets();
+                alert("Backup restored successfully!");
+            }
+        } catch (err) {
+            alert("Error parsing backup file.");
+        }
+    };
+    reader.readAsText(file);
+});
+
+// Initial load
 renderSnippets();

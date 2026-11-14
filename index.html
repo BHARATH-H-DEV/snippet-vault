@@ -7,66 +7,82 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-       <header>
-        <div class="header-text">
-            <h1>{ Snippet Vault }</h1>
-            <p class="subtitle">A local, browser-based database for your Python algorithms, bash commands, and web boilerplate. No account required; data stays strictly on your device.</p>
-        </div>
-        <button id="theme-toggle">🌙 Dark Mode</button>
-    </header>
-
-
-          <main>
-        <!-- Features Panel -->
-        <section class="info-panel">
-            <div class="info-card">
-                <h3>⚡ Lightning Fast</h3>
-                <p>No database latency. Code saves instantly to your local browser storage.</p>
+    <div class="app-container">
+        <!-- New Colorful Hero Header -->
+        <header class="hero-header">
+            <div class="header-text">
+                <h1>{ Snippet Vault }</h1>
+                <p class="subtitle">A secure, offline-first database for your Python algorithms, terminal workflows, and full-stack boilerplate.</p>
             </div>
-            <div class="info-card">
-                <h3>🔒 Privacy First</h3>
-                <p>Your Python algorithms and bash scripts never leave this Mac.</p>
-            </div>
-            <div class="info-card">
-                <h3>📋 One-Click Copy</h3>
-                <p>Grab your boilerplate code instantly to paste into VS Code.</p>
-            </div>
-        </section>
+            <button id="theme-toggle" class="btn-theme">🌙 Dark Mode</button>
+        </header>
 
-        <!-- New: Account & Stats Dashboard -->
-        <section class="dashboard-panel">
-            <div class="stat-card">
-                <h4>👨‍💻 Local Profile</h4>
-                <p><strong>User:</strong> Bharath</p>
-                <p><strong>Sync:</strong> Local Storage Only</p>
-            </div>
-            <div class="stat-card">
-                <h4>📊 Vault Stats</h4>
-                <p><strong>Total Snippets:</strong> <span id="snippet-count">0</span></p>
-                <p><strong>Storage Used:</strong> <span id="storage-size">0.00</span> KB</p>
-            </div>
-            <div class="stat-card">
-                <h4>🔍 Search Past Saves</h4>
-                <input type="text" id="search-input" placeholder="Type to filter snippets...">
-            </div>
-        </section>
+        <main>
+            <!-- Features Panel -->
+            <section class="info-panel">
+                <div class="info-card">
+                    <h3>⚡ Lightning Fast</h3>
+                    <p>No database latency. Code saves instantly to your local browser storage.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🔒 Privacy First</h3>
+                    <p>Your Python algorithms and bash scripts never leave this Mac.</p>
+                </div>
+                <div class="info-card">
+                    <h3>📋 One-Click Copy</h3>
+                    <p>Grab your boilerplate code instantly to paste into VS Code.</p>
+                </div>
+            </section>
 
-        <!-- Existing Form -->
-        <section class="form-section">
-            <form id="snippet-form">
-                <input type="text" id="snippet-title" placeholder="Snippet Title (e.g., Git Undo Last Commit)" required>
-                <textarea id="snippet-code" rows="5" placeholder="Paste your working code here..." required></textarea>
-                <button type="submit">Save Snippet</button>
-            </form>
-        </section>
+            <!-- Account & Stats Dashboard -->
+            <section class="dashboard-panel">
+                <div class="stat-card">
+                    <h4>👨‍💻 Local Profile</h4>
+                    <p><strong>User:</strong> Bharath</p>
+                    <p><strong>Sync:</strong> Local Storage Only</p>
+                </div>
+                <div class="stat-card">
+                    <h4>📊 Vault Stats</h4>
+                    <p><strong>Total Snippets:</strong> <span id="snippet-count">0</span></p>
+                    <p><strong>Storage Used:</strong> <span id="storage-size">0.00</span> KB</p>
+                </div>
+                <div class="stat-card">
+                    <h4>🔍 Search Saves</h4>
+                    <input type="text" id="search-input" placeholder="Type to filter snippets...">
+                </div>
+                <!-- NEW: Data Management Feature -->
+                <div class="stat-card backup-card">
+                    <h4>💾 Backup Data</h4>
+                    <div class="button-group">
+                        <button id="export-btn" class="btn-secondary">Export Backup</button>
+                        <button id="import-btn" class="btn-secondary" onclick="document.getElementById('import-file').click()">Import Backup</button>
+                        <input type="file" id="import-file" style="display:none" accept=".json">
+                    </div>
+                </div>
+            </section>
 
-        <section id="vault-grid" class="vault-grid">
-            <!-- Snippet cards will be injected here -->
-        </section>
-    </main>
+            <!-- Form -->
+            <section class="form-section">
+                <div class="form-card">
+                    <form id="snippet-form">
+                        <input type="text" id="snippet-title" placeholder="Snippet Title (e.g., Git Undo Last Commit)" required>
+                        <textarea id="snippet-code" rows="5" placeholder="Paste your working code here..." required></textarea>
+                        <button type="submit" class="btn-primary">Save Snippet to Vault</button>
+                    </form>
+                </div>
+            </section>
 
-    <footer>
-        <p>Built for efficiency | <a href="https://github.com/BHARATH-H-DEV/web_dev_lab" target="_blank">View GitHub Portfolio</a></p>
-    </footer>
+            <!-- Grid -->
+            <section id="vault-grid" class="vault-grid">
+                <!-- Snippet cards will be injected here -->
+            </section>
+        </main>
+
+        <footer>
+            <p>Built for efficiency | <a href="https://github.com/BHARATH-H-DEV/web_dev_lab" target="_blank">View GitHub Portfolio</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
