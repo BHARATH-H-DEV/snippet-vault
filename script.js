@@ -20,36 +20,41 @@ if (savedTheme) {
 const form = document.getElementById('snippet-form');
 const vaultGrid = document.getElementById('vault-grid');
 let snippets = JSON.parse(localStorage.getItem('snippets')) || [];
+let currentCategoryFilter = 'All';
 
 // --- Render Logic ---
-function renderSnippets(filterText = '') {
+function renderSnippets(searchText = '') {
     vaultGrid.innerHTML = '';
     
-    // Update Dashboard Stats
+    // Update Stats
     document.getElementById('snippet-count').textContent = snippets.length;
     document.getElementById('storage-size').textContent = (JSON.stringify(snippets).length / 1024).toFixed(2);
 
-    const filteredSnippets = snippets.filter(snippet => 
-        snippet.title.toLowerCase().includes(filterText.toLowerCase()) || 
-        snippet.code.toLowerCase().includes(filterText.toLowerCase())
-    );
+    // Apply Filters (Search Text + Category Button)
+    const filteredSnippets = snippets.filter(snippet => {
+        const matchesSearch = snippet.title.toLowerCase().includes(searchText.toLowerCase()) || 
+                              snippet.code.toLowerCase().includes(searchText.toLowerCase());
+        const matchesCategory = currentCategoryFilter === 'All' || snippet.category === currentCategoryFilter;
+        return matchesSearch && matchesCategory;
+    });
     
     if (filteredSnippets.length === 0) {
-        vaultGrid.innerHTML = `
-            <div class="empty-state">
-                <h3>No Snippets Found</h3>
-                <p>${snippets.length === 0 ? 'Start by saving your first piece of code above.' : 'Try a different search term.'}</p>
-            </div>
-        `;
+        vaultGrid.innerHTML = `<div class="empty-state"><h3>No Snippets Found</h3><p>Try adjusting your search or category filter.</p></div>`;
         return;
     }
 
     filteredSnippets.forEach((snippet) => {
         const trueIndex = snippets.indexOf(snippet);
+        // Default to "Uncategorized" for older saves
+        const displayCategory = snippet.category || 'Uncategorized'; 
+        
         const card = document.createElement('div');
         card.className = 'snippet-card';
         card.innerHTML = `
-            <h3>${snippet.title}</h3>
+            <div class="card-header">
+                <h3>${snippet.title}</h3>
+                <span class="badge">${displayCategory}</span>
+            </div>
             <pre><code>${snippet.code}</code></pre>
             <div class="card-actions">
                 <button class="btn-secondary" onclick="copyCode(${trueIndex})">Copy Code</button>
@@ -64,9 +69,10 @@ function renderSnippets(filterText = '') {
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const title = document.getElementById('snippet-title').value;
+    const category = document.getElementById('snippet-category').value;
     const code = document.getElementById('snippet-code').value;
     
-    snippets.push({ title, code });
+    snippets.push({ title, category, code });
     localStorage.setItem('snippets', JSON.stringify(snippets));
     
     form.reset();
@@ -75,6 +81,19 @@ form.addEventListener('submit', (e) => {
 
 document.getElementById('search-input').addEventListener('input', (e) => {
     renderSnippets(e.target.value);
+});
+
+// Category Filter Buttons
+document.getElementById('category-filters').addEventListener('click', (e) => {
+    if(e.target.classList.contains('filter-btn')) {
+        // Update active class
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        // Update state and re-render
+        currentCategoryFilter = e.target.getAttribute('data-filter');
+        renderSnippets(document.getElementById('search-input').value);
+    }
 });
 
 // --- Actions ---
@@ -103,7 +122,7 @@ window.deleteSnippet = function(index) {
     renderSnippets(document.getElementById('search-input').value);
 };
 
-// --- NEW: Backup & Restore Data ---
+// --- Backup & Restore ---
 document.getElementById('export-btn').addEventListener('click', () => {
     if(snippets.length === 0) return alert("Nothing to export yet!");
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(snippets));
@@ -135,5 +154,4 @@ document.getElementById('import-file').addEventListener('change', (e) => {
     reader.readAsText(file);
 });
 
-// Initial load
 renderSnippets();

@@ -8,32 +8,16 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- New Colorful Hero Header -->
+        <!-- Hero Header -->
         <header class="hero-header">
             <div class="header-text">
-                <h1>{ Snippet Vault }</h1>
-                <p class="subtitle">A secure, offline-first database for your Python algorithms, terminal workflows, and full-stack boilerplate.</p>
+                <h1>Snippet Vault</h1>
+                <p class="subtitle">A secure, offline-first database for your algorithms, terminal workflows, and full-stack boilerplate.</p>
             </div>
             <button id="theme-toggle" class="btn-theme">🌙 Dark Mode</button>
         </header>
 
         <main>
-            <!-- Features Panel -->
-            <section class="info-panel">
-                <div class="info-card">
-                    <h3>⚡ Lightning Fast</h3>
-                    <p>No database latency. Code saves instantly to your local browser storage.</p>
-                </div>
-                <div class="info-card">
-                    <h3>🔒 Privacy First</h3>
-                    <p>Your Python algorithms and bash scripts never leave this Mac.</p>
-                </div>
-                <div class="info-card">
-                    <h3>📋 One-Click Copy</h3>
-                    <p>Grab your boilerplate code instantly to paste into VS Code.</p>
-                </div>
-            </section>
-
             <!-- Account & Stats Dashboard -->
             <section class="dashboard-panel">
                 <div class="stat-card">
@@ -46,16 +30,21 @@
                     <p><strong>Total Snippets:</strong> <span id="snippet-count">0</span></p>
                     <p><strong>Storage Used:</strong> <span id="storage-size">0.00</span> KB</p>
                 </div>
+                <!-- NEW: Quick Resources Panel -->
                 <div class="stat-card">
-                    <h4>🔍 Search Saves</h4>
-                    <input type="text" id="search-input" placeholder="Type to filter snippets...">
+                    <h4>📚 Quick Resources</h4>
+                    <div class="resource-links">
+                        <a href="https://docs.python.org/3/" target="_blank">Python Docs</a>
+                        <a href="https://docs.oracle.com/en/java/" target="_blank">Java API</a>
+                        <a href="https://en.cppreference.com/w/c" target="_blank">C Reference</a>
+                    </div>
                 </div>
-                <!-- NEW: Data Management Feature -->
+                <!-- Data Management -->
                 <div class="stat-card backup-card">
                     <h4>💾 Backup Data</h4>
                     <div class="button-group">
                         <button id="export-btn" class="btn-secondary">Export Backup</button>
-                        <button id="import-btn" class="btn-secondary" onclick="document.getElementById('import-file').click()">Import Backup</button>
+                        <button id="import-btn" class="btn-secondary" onclick="document.getElementById('import-file').click()">Import</button>
                         <input type="file" id="import-file" style="display:none" accept=".json">
                     </div>
                 </div>
@@ -65,10 +54,38 @@
             <section class="form-section">
                 <div class="form-card">
                     <form id="snippet-form">
-                        <input type="text" id="snippet-title" placeholder="Snippet Title (e.g., Git Undo Last Commit)" required>
+                        <div class="form-row">
+                            <input type="text" id="snippet-title" placeholder="Snippet Title (e.g., Binary Search)" required>
+                            <!-- NEW: Category Dropdown -->
+                            <select id="snippet-category" required>
+                                <option value="" disabled selected>Select Language/Topic...</option>
+                                <option value="Python">Python</option>
+                                <option value="Java">Java</option>
+                                <option value="C">C</option>
+                                <option value="DSA">Data Structures</option>
+                                <option value="Bash">Terminal / Bash</option>
+                                <option value="Web">Web (HTML/CSS)</option>
+                            </select>
+                        </div>
                         <textarea id="snippet-code" rows="5" placeholder="Paste your working code here..." required></textarea>
                         <button type="submit" class="btn-primary">Save Snippet to Vault</button>
                     </form>
+                </div>
+            </section>
+
+            <!-- NEW: Filter & Search Bar -->
+            <section class="filter-section">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="🔍 Search through saves...">
+                </div>
+                <div class="category-filters" id="category-filters">
+                    <button class="filter-btn active" data-filter="All">All</button>
+                    <button class="filter-btn" data-filter="Python">Python</button>
+                    <button class="filter-btn" data-filter="Java">Java</button>
+                    <button class="filter-btn" data-filter="C">C</button>
+                    <button class="filter-btn" data-filter="DSA">DSA</button>
+                    <button class="filter-btn" data-filter="Bash">Bash</button>
+                    <button class="filter-btn" data-filter="Web">Web</button>
                 </div>
             </section>
 
