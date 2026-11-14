@@ -7,25 +7,66 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>{ Snippet Vault }</h1>
+       <header>
+        <div class="header-text">
+            <h1>{ Snippet Vault }</h1>
+            <p class="subtitle">A local, browser-based database for your Python algorithms, bash commands, and web boilerplate. No account required; data stays strictly on your device.</p>
+        </div>
         <button id="theme-toggle">🌙 Dark Mode</button>
     </header>
 
-    <main>
+
+          <main>
+        <!-- Features Panel -->
+        <section class="info-panel">
+            <div class="info-card">
+                <h3>⚡ Lightning Fast</h3>
+                <p>No database latency. Code saves instantly to your local browser storage.</p>
+            </div>
+            <div class="info-card">
+                <h3>🔒 Privacy First</h3>
+                <p>Your Python algorithms and bash scripts never leave this Mac.</p>
+            </div>
+            <div class="info-card">
+                <h3>📋 One-Click Copy</h3>
+                <p>Grab your boilerplate code instantly to paste into VS Code.</p>
+            </div>
+        </section>
+
+        <!-- New: Account & Stats Dashboard -->
+        <section class="dashboard-panel">
+            <div class="stat-card">
+                <h4>👨‍💻 Local Profile</h4>
+                <p><strong>User:</strong> Bharath</p>
+                <p><strong>Sync:</strong> Local Storage Only</p>
+            </div>
+            <div class="stat-card">
+                <h4>📊 Vault Stats</h4>
+                <p><strong>Total Snippets:</strong> <span id="snippet-count">0</span></p>
+                <p><strong>Storage Used:</strong> <span id="storage-size">0.00</span> KB</p>
+            </div>
+            <div class="stat-card">
+                <h4>🔍 Search Past Saves</h4>
+                <input type="text" id="search-input" placeholder="Type to filter snippets...">
+            </div>
+        </section>
+
+        <!-- Existing Form -->
         <section class="form-section">
             <form id="snippet-form">
-                <input type="text" id="snippet-title" placeholder="Snippet Title (e.g., Git Undo)" required>
-                <textarea id="snippet-code" rows="5" placeholder="Paste your code or bash commands here..." required></textarea>
+                <input type="text" id="snippet-title" placeholder="Snippet Title (e.g., Git Undo Last Commit)" required>
+                <textarea id="snippet-code" rows="5" placeholder="Paste your working code here..." required></textarea>
                 <button type="submit">Save Snippet</button>
             </form>
         </section>
 
         <section id="vault-grid" class="vault-grid">
-            <!-- Snippet cards will be injected here by JavaScript -->
+            <!-- Snippet cards will be injected here -->
         </section>
     </main>
 
-    <script src="script.js"></script>
+    <footer>
+        <p>Built for efficiency | <a href="https://github.com/BHARATH-H-DEV/web_dev_lab" target="_blank">View GitHub Portfolio</a></p>
+    </footer>
 </body>
 </html>

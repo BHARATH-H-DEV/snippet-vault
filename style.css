@@ -112,3 +112,156 @@ input, textarea {
     display: flex;
     justify-content: space-between;
 }
+/* Enhanced Header Styling */
+.header-text {
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #007bff, #8a2be2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: #666;
+}
+
+[data-theme="dark"] .subtitle {
+    color: #aaa;
+}
+
+/* Card Animations & Hover Effects */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.snippet-card {
+    animation: fadeIn 0.4s ease-out forwards;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.snippet-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .snippet-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+/* Features Panel Styling */
+.info-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.info-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+}
+
+.info-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+}
+
+.info-card p {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Empty State Styling */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--card-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    color: #666;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+[data-theme="dark"] .empty-state {
+    color: #aaa;
+}
+
+/* Footer Styling */
+footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+[data-theme="dark"] footer {
+    color: #aaa;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+/* Dashboard & Search Styling */
+.dashboard-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-card h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent-color);
+}
+
+.stat-card p {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+#search-input {
+    margin-top: 0.5rem;
+    background-color: var(--bg-color);
+}
