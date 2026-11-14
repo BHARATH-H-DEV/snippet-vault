@@ -119,3 +119,35 @@ footer a { color: var(--accent-color); text-decoration: none; font-weight: 600; 
 footer a:hover { text-decoration: underline; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* --- Logo & Header Alignment --- */
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* Pushes the title slightly to the right of the logo */
+}
+
+.app-logo {
+    width: 64px;
+    height: 64px;
+    color: var(--header-text);
+    flex-shrink: 0;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+    animation: float 3s ease-in-out infinite; /* Adds subtle floating animation */
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+@media (max-width: 768px) {
+    .header-brand {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .app-logo {
+        width: 48px;
+        height: 48px;
+    }
+}

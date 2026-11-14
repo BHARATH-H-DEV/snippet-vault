@@ -7,15 +7,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
         <!-- Hero Header -->
         <header class="hero-header">
-            <div class="header-text">
-                <h1>Snippet Vault</h1>
-                <p class="subtitle">A secure, offline-first database for your algorithms, terminal workflows, and full-stack boilerplate.</p>
+            <div class="header-brand">
+                <!-- Custom SVG Logo -->
+                <svg class="app-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    <polyline points="16 11.25 18 10 20 11.25"></polyline>
+                    <polyline points="4 11.25 6 10 8 11.25"></polyline>
+                </svg>
+                <div class="header-text">
+                    <h1>Snippet Vault</h1>
+                    <p class="subtitle">A secure, offline-first database for your algorithms, terminal workflows, and full-stack boilerplate.</p>
+                </div>
             </div>
             <button id="theme-toggle" class="btn-theme">🌙 Dark Mode</button>
         </header>
+
 
         <main>
             <!-- Account & Stats Dashboard -->
