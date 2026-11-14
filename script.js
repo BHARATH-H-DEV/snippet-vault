@@ -16,13 +16,52 @@ if (savedTheme) {
     themeToggleBtn.textContent = savedTheme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode';
 }
 
-// --- App State ---
+// --- NEW: Scratchpad Logic ---
+const scratchpad = document.getElementById('scratchpad-input');
+const saveStatus = document.getElementById('save-status');
+
+// Load existing scratchpad data
+scratchpad.value = localStorage.getItem('scratchpad_data') || '';
+
+// Auto-save on type with slight delay to prevent lag
+let timeoutId;
+scratchpad.addEventListener('input', () => {
+    saveStatus.textContent = 'Saving...';
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+        localStorage.setItem('scratchpad_data', scratchpad.value);
+        saveStatus.textContent = 'Saved';
+    }, 500);
+});
+
+// --- NEW: Skill Tracker Logic ---
+const checkboxes = document.querySelectorAll('.check-item input');
+const trackerCount = document.getElementById('tracker-count');
+const savedProgress = JSON.parse(localStorage.getItem('skill_progress')) || {};
+let completedCount = 0;
+
+checkboxes.forEach(cb => {
+    if(savedProgress[cb.value]) {
+        cb.checked = true;
+        completedCount++;
+    }
+    
+    cb.addEventListener('change', (e) => {
+        savedProgress[e.target.value] = e.target.checked;
+        localStorage.setItem('skill_progress', JSON.stringify(savedProgress));
+        // Update the visual count
+        trackerCount.textContent = document.querySelectorAll('.check-item input:checked').length;
+    });
+});
+trackerCount.textContent = completedCount;
+
+
+// --- App State & Snippet Logic ---
 const form = document.getElementById('snippet-form');
 const vaultGrid = document.getElementById('vault-grid');
 let snippets = JSON.parse(localStorage.getItem('snippets')) || [];
 let currentCategoryFilter = 'All';
 
-// --- Render Logic ---
 function renderSnippets(searchText = '') {
     vaultGrid.innerHTML = '';
     
@@ -30,7 +69,7 @@ function renderSnippets(searchText = '') {
     document.getElementById('snippet-count').textContent = snippets.length;
     document.getElementById('storage-size').textContent = (JSON.stringify(snippets).length / 1024).toFixed(2);
 
-    // Apply Filters (Search Text + Category Button)
+    // Apply Filters
     const filteredSnippets = snippets.filter(snippet => {
         const matchesSearch = snippet.title.toLowerCase().includes(searchText.toLowerCase()) || 
                               snippet.code.toLowerCase().includes(searchText.toLowerCase());
@@ -45,7 +84,6 @@ function renderSnippets(searchText = '') {
 
     filteredSnippets.forEach((snippet) => {
         const trueIndex = snippets.indexOf(snippet);
-        // Default to "Uncategorized" for older saves
         const displayCategory = snippet.category || 'Uncategorized'; 
         
         const card = document.createElement('div');
@@ -65,7 +103,7 @@ function renderSnippets(searchText = '') {
     });
 }
 
-// --- Event Listeners ---
+// Event Listeners
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const title = document.getElementById('snippet-title').value;
@@ -83,20 +121,16 @@ document.getElementById('search-input').addEventListener('input', (e) => {
     renderSnippets(e.target.value);
 });
 
-// Category Filter Buttons
 document.getElementById('category-filters').addEventListener('click', (e) => {
     if(e.target.classList.contains('filter-btn')) {
-        // Update active class
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         e.target.classList.add('active');
-        
-        // Update state and re-render
         currentCategoryFilter = e.target.getAttribute('data-filter');
         renderSnippets(document.getElementById('search-input').value);
     }
 });
 
-// --- Actions ---
+// Actions
 window.copyCode = function(index) {
     const codeToCopy = snippets[index].code;
     navigator.clipboard.writeText(codeToCopy).then(() => {
@@ -122,7 +156,7 @@ window.deleteSnippet = function(index) {
     renderSnippets(document.getElementById('search-input').value);
 };
 
-// --- Backup & Restore ---
+// Backup & Restore
 document.getElementById('export-btn').addEventListener('click', () => {
     if(snippets.length === 0) return alert("Nothing to export yet!");
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(snippets));

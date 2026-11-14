@@ -30,7 +30,6 @@
                     <p><strong>Total Snippets:</strong> <span id="snippet-count">0</span></p>
                     <p><strong>Storage Used:</strong> <span id="storage-size">0.00</span> KB</p>
                 </div>
-                <!-- NEW: Quick Resources Panel -->
                 <div class="stat-card">
                     <h4>📚 Quick Resources</h4>
                     <div class="resource-links">
@@ -39,7 +38,6 @@
                         <a href="https://en.cppreference.com/w/c" target="_blank">C Reference</a>
                     </div>
                 </div>
-                <!-- Data Management -->
                 <div class="stat-card backup-card">
                     <h4>💾 Backup Data</h4>
                     <div class="button-group">
@@ -50,13 +48,40 @@
                 </div>
             </section>
 
+            <!-- NEW: Workspace Tools -->
+            <section class="workspace-tools">
+                <!-- Scratchpad -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>📝 Auto-Saving Scratchpad</h4>
+                        <span class="status-indicator" id="save-status">Saved</span>
+                    </div>
+                    <textarea id="scratchpad-input" placeholder="Drop temporary code, links, or unstructured notes here. It auto-saves immediately as you type..."></textarea>
+                </div>
+
+                <!-- Skill Tracker -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h4>🎯 Foundation Skill Tracker</h4>
+                        <span class="progress-text"><span id="tracker-count">0</span>/6</span>
+                    </div>
+                    <div class="checklist" id="skill-tracker">
+                        <label class="check-item"><input type="checkbox" value="java"> Java Programming & OOP</label>
+                        <label class="check-item"><input type="checkbox" value="dsa"> Data Structures & Algorithms</label>
+                        <label class="check-item"><input type="checkbox" value="python"> Python & Machine Learning</label>
+                        <label class="check-item"><input type="checkbox" value="c"> C Programming</label>
+                        <label class="check-item"><input type="checkbox" value="math"> Linear Algebra</label>
+                        <label class="check-item"><input type="checkbox" value="web"> HTML5 & CSS3 Layouts</label>
+                    </div>
+                </div>
+            </section>
+
             <!-- Form -->
             <section class="form-section">
                 <div class="form-card">
                     <form id="snippet-form">
                         <div class="form-row">
                             <input type="text" id="snippet-title" placeholder="Snippet Title (e.g., Binary Search)" required>
-                            <!-- NEW: Category Dropdown -->
                             <select id="snippet-category" required>
                                 <option value="" disabled selected>Select Language/Topic...</option>
                                 <option value="Python">Python</option>
@@ -73,7 +98,7 @@
                 </div>
             </section>
 
-            <!-- NEW: Filter & Search Bar -->
+            <!-- Filter & Search Bar -->
             <section class="filter-section">
                 <div class="search-box">
                     <input type="text" id="search-input" placeholder="🔍 Search through saves...">
